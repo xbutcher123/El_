@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Adventure of Lyndel ✨</title>
+    <title>The Adventure of El ✨</title>
     <style>
         body {
             margin: 0;
@@ -84,6 +84,31 @@
         }
         .message-bubble strong { color: #ff4757; }
 
+        /* Mobile Touch Controls Layout */
+        .mobile-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            padding: 0 5px;
+            user-select: none;
+        }
+        .d-pad { display: flex; gap: 10px; }
+        .d-btn {
+            width: 55px; height: 55px; background: #a1c4fd; border: 3px solid #fff; border-radius: 50%;
+            color: white; font-size: 1.5rem; font-weight: bold; display: flex; justify-content: center;
+            align-items: center; cursor: pointer; box-shadow: 0 4px 10px rgba(161, 196, 253, 0.4);
+            transition: transform 0.1s, background-color 0.1s; -webkit-user-select: none;
+        }
+        .d-btn:active { transform: scale(0.9); background: #74b9ff; }
+        .jump-btn { background: #ff9a9e; box-shadow: 0 4px 10px rgba(255, 154, 158, 0.4); width: 70px; height: 55px; border-radius: 20px; }
+        .jump-btn:active { background: #ff7675; }
+
+        /* Only show mobile layout controls explicitly on devices that support touch inputs */
+        @media (hover: hover) and (pointer: fine) {
+            .mobile-controls { display: flex; } /* Keeps it visible for testing, change to none if you want true adaptive hiding */
+        }
+
         /* --- STAGE 3: WATER ELEMENT PUZZLE --- */
         .puzzle-arena { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0; text-align: left; }
         .atom-pool { background: rgba(255,255,255,0.6); padding: 15px; border-radius: 15px; border: 2px dashed #a1c4fd; min-height: 100px; display: flex; gap: 10px; flex-wrap: wrap; align-content: center; }
@@ -92,7 +117,7 @@
         .atom {
             width: 45px; height: 45px; border-radius: 50%; display: flex; justify-content: center; align-items: center;
             font-weight: bold; color: white; cursor: grab; user-select: none; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: transform 0.1s; font-size: 1.1rem;
+            transition: transform 0.1s; font-size: 1.1rem; touch-action: none;
         }
         .atom:active { cursor: grabbing; }
         .atom.hydrogen { background: #ff7675; border: 2px solid #fff; }
@@ -124,7 +149,6 @@
 
     <div class="container">
         
-        <!-- STEP 1: LOG IN PORTAL -->
         <div class="cute-card active" id="cardLogin">
             <h2 class="login-title">🎂 Celebrant Identity Verification 🎂</h2>
             
@@ -136,21 +160,28 @@
             
             <div class="input-group">
                 <label for="password">Password (Birthdate):</label>
-                <div class="input-guide">Required Format: YYYY-MM-DD (e.g., 2001-4-10)</div>
+                <div class="input-guide">Required Format: YYYY-MM-DD (e.g., 2002-06-03)</div>
                 <input type="text" id="password" placeholder="YYYY-MM-DD" maxlength="10">
-            </div> 
+            </div>
             
             <button class="action-btn" onclick="checkCredentials()">Login & Play 🎮</button>
             <div class="error-message" id="loginError">Access denied. Double check credentials! 💕</div>
         </div>
 
-        <!-- STEP 2: MARIO ARCADE PLATFORM -->
         <div class="cute-card" id="cardGame">
-            <h2 style="color: #ff6b81; margin: 0 0 10px 0;">The Adventure of Lyndel 👑</h2>
-            <p style="font-size: 0.9rem; color: #778ca3; margin: 0 0 15px 0;">Help <strong>Lyndel</strong> bump all 3 blocks using Left/Right keys and Spacebar to jump!</p>
+            <h2 style="color: #ff6b81; margin: 0 0 10px 0;">The Adventure of El 👑</h2>
+            <p style="font-size: 0.85rem; color: #778ca3; margin: 0 0 10px 0;">Help <strong>Lyndel</strong> bump all 3 blocks using keyboard controls or mobile screen layout!</p>
             
             <div class="game-wrapper">
                 <canvas id="marioCanvas" width="500" height="200"></canvas>
+            </div>
+
+            <div class="mobile-controls">
+                <div class="d-pad">
+                    <div class="d-btn" id="btnLeft">←</div>
+                    <div class="d-btn" id="btnRight">→</div>
+                </div>
+                <div class="d-btn jump-btn" id="btnJump">JUMP</div>
             </div>
 
             <div class="message-bubble" id="msgBox0"><strong>Box #1 discovered:</strong> Happy Birthday Lyndel! Today is code-named to celebrate the incredible energy and beautiful light you bring into our lives.</div>
@@ -162,7 +193,6 @@
             </div>
         </div>
 
-        <!-- STEP 3: COVALENT DRAG & DROP CHEMICAL WATER PUZZLE -->
         <div class="cute-card" id="cardPuzzle">
             <h2 style="color: #2e86de; margin-top: 0;">💧 Synthesis Puzzle: Element Formulation</h2>
             <p style="color: #57606f; font-size: 0.95rem;">Drag and drop atoms from the resource pool into the reactor framework below to build a molecule of life: **Water** ($H_2O$)!</p>
@@ -188,7 +218,6 @@
             <div class="error-message" id="puzzleError">Formula mismatch. Check your combination matrix!</div>
         </div>
 
-        <!-- STEP 4: FINAL CELEBRATION DISCLOSURE -->
         <div class="cute-card" id="cardFinal">
             <h1 style="font-size: 2.5rem; margin-top: 0;">Unconditional Success! 🎉</h1>
             <h3 style="color:#ff6b81; margin-top:-10px;">Happiest Birthday, Lyndel! 💖</h3>
@@ -205,7 +234,7 @@
     </div>
 
     <script>
-        const USERNAME_TARGET = "lyndel";
+        const USERNAME_TARGET = "el";
         const PASSWORD_TARGET = "2002-06-03"; 
 
         function navigateTo(targetId) {
@@ -231,7 +260,6 @@
             }
         }
 
-        // Auto-hyphenate logic to gently assist input format if desired
         document.getElementById('password').addEventListener('input', function (e) {
             let x = e.target.value.replace(/\D/g, '').match(/(\d{0,4})(\d{0,2})(\d{0,2})/);
             e.target.value = !x[2] ? x[1] : x[1] + '-' + x[2] + (x[3] ? '-' + x[3] : '');
@@ -259,8 +287,24 @@
             let friction = 0.82;
             let keys = {};
 
-            window.addEventListener("keydown", e => { if([32,37,39].includes(e.keyCode)) e.preventDefault(); keys[e.keyCode] = true; });
+            // Hardware Keyboard event hooks
+            window.addEventListener("keydown", e => { if([32,37,39,38].includes(e.keyCode)) e.preventDefault(); keys[e.keyCode] = true; });
             window.addEventListener("keyup", e => { keys[e.keyCode] = false; });
+
+            // Universal Input Interface (Maps mobile interface touch listeners to matching inputs)
+            const mapButtonTouch = (btnId, keyCode) => {
+                const btn = document.getElementById(btnId);
+                btn.addEventListener("touchstart", (e) => { e.preventDefault(); keys[keyCode] = true; });
+                btn.addEventListener("touchend", (e) => { e.preventDefault(); keys[keyCode] = false; });
+                // Compatibility mapping hooks fallback for non-touch device emulation clicks
+                btn.addEventListener("mousedown", () => { keys[keyCode] = true; });
+                btn.addEventListener("mouseup", () => { keys[keyCode] = false; });
+                btn.addEventListener("mouseleave", () => { keys[keyCode] = false; });
+            };
+
+            mapButtonTouch("btnLeft", 37);
+            mapButtonTouch("btnRight", 39);
+            mapButtonTouch("btnJump", 32);
 
             function loopPhysics() {
                 if (keys[39]) { if (player.velX < 3.5) player.velX++; }
@@ -324,7 +368,7 @@
                     ctx.fillText(b.popped ? "✓" : "?", b.x + 9, calcY + 21);
                 });
 
-                // Lyndel Character Rendering (Pink and Blue dress)
+                // Lyndel Character Rendering
                 ctx.fillStyle = "#ffeaa7"; 
                 ctx.fillRect(player.x - 2, player.y - 3, player.width + 4, 10);
                 ctx.fillStyle = "#ffd3cb"; 
@@ -352,6 +396,7 @@
             navigateTo('cardPuzzle');
         }
 
+        // Touch Drag/Drop polyfill configurations for mobile puzzle support
         function handleDrag(ev) { ev.dataTransfer.setData("text", ev.target.id); }
         function allowDrop(ev) { ev.preventDefault(); }
         function handleDrop(ev) {
@@ -363,6 +408,20 @@
             }
             updateFormulaReading();
         }
+
+        // Mobile touch tap movement alternative for puzzle pieces fallback
+        document.querySelectorAll('.atom').forEach(atom => {
+            atom.addEventListener('click', function() {
+                const pool = document.getElementById('poolZone');
+                const reactor = document.getElementById('reactorZone');
+                if (this.parentNode.id === 'poolZone') {
+                    reactor.appendChild(this);
+                } else {
+                    pool.appendChild(this);
+                }
+                updateFormulaReading();
+            });
+        });
 
         function updateFormulaReading() {
             let reactor = document.getElementById('reactorZone');
