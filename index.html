@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday! ✨</title>
+    <title>The Adventure of Lyndel ✨</title>
     <style>
-        /* Base Styling & Pastel Background Animation */
         body {
             margin: 0;
             padding: 0;
@@ -17,7 +16,8 @@
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
             font-family: 'Comic Sans MS', 'Segoe UI', Roboto, sans-serif;
-            overflow: hidden;
+            overflow-x: hidden;
+            overflow-y: auto;
         }
 
         @keyframes gradientBG {
@@ -26,209 +26,96 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* --- CUTE POP IN / POP OUT FRAMES --- */
         .container {
             position: relative;
             z-index: 10;
-            width: 90%;
-            max-width: 550px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            width: 92%;
+            max-width: 600px;
+            margin: 30px 0;
         }
 
         .cute-card {
-            background: rgba(255, 255, 255, 0.85);
-            padding: 3rem 2.5rem;
+            background: rgba(255, 255, 255, 0.88);
+            padding: 2.5rem 2rem;
             border-radius: 30px;
             box-shadow: 0 15px 35px rgba(255, 107, 129, 0.2);
             backdrop-filter: blur(15px);
             border: 4px solid #fff;
             text-align: center;
-            position: absolute;
-            width: 100%;
             box-sizing: border-box;
-            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            transform: scale(0);
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        /* Active State (Pop In) */
-        .cute-card.active {
-            transform: scale(1);
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        /* Dismissed State (Pop Out) */
-        .cute-card.pop-out {
-            transform: scale(0) rotate(-10deg);
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        /* --- LOGIN PORTAL STYLING --- */
-        .login-title {
-            color: #ff6b81;
-            font-size: 2rem;
-            margin-top: 0;
-            margin-bottom: 1.5rem;
-        }
-
-        .input-group {
-            margin-bottom: 1.2rem;
-            text-align: left;
-        }
-
-        .input-group label {
-            display: block;
-            color: #ff7675;
-            font-weight: bold;
-            margin-bottom: 0.4rem;
-            font-size: 0.9rem;
-            padding-left: 0.5rem;
-        }
-
-        .input-group input {
+            display: none;
             width: 100%;
-            padding: 0.8rem 1rem;
-            border: 2px solid #ffeaa7;
-            border-radius: 15px;
-            font-size: 1rem;
-            box-sizing: border-box;
-            outline: none;
-            transition: border-color 0.3s;
-            font-family: inherit;
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
 
-        .input-group input:focus {
-            border-color: #ff6b81;
+        .cute-card.active { display: block; }
+
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
         }
 
-        .login-btn {
-            background: #ff6b81;
-            color: white;
-            border: none;
-            padding: 0.8rem 2.5rem;
-            font-size: 1.1rem;
-            font-weight: bold;
-            border-radius: 20px;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(255, 107, 129, 0.4);
-            transition: transform 0.2s, background 0.2s;
-            font-family: inherit;
-            margin-top: 0.5rem;
+        /* --- LOGIN PORTAL --- */
+        .login-title { color: #ff6b81; font-size: 2rem; margin-bottom: 1.5rem; }
+        .input-group { margin-bottom: 1.2rem; text-align: left; }
+        .input-group label { display: block; color: #ff7675; font-weight: bold; margin-bottom: 0.2rem; font-size: 0.9rem; padding-left: 0.5rem; }
+        .input-guide { display: block; font-size: 0.78rem; color: #a5b1c2; margin-bottom: 0.4rem; padding-left: 0.5rem; font-style: italic; }
+        .input-group input { width: 100%; padding: 0.8rem 1rem; border: 2px solid #ffeaa7; border-radius: 15px; font-size: 1rem; box-sizing: border-box; outline: none; font-family: inherit; }
+        .input-group input:focus { border-color: #ff6b81; }
+        
+        .action-btn {
+            background: #ff6b81; color: white; border: none; padding: 0.8rem 2.5rem; font-size: 1.1rem; font-weight: bold; border-radius: 20px; cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 107, 129, 0.4); transition: all 0.2s; font-family: inherit; margin-top: 0.5rem;
         }
+        .action-btn:hover { transform: scale(1.05); background: #ff4757; }
+        .error-message { color: #ff4757; font-size: 0.9rem; margin-top: 1rem; font-weight: bold; opacity: 0; height: 15px; }
 
-        .login-btn:hover {
-            transform: scale(1.05);
-            background: #ff4757;
-        }
+        .shake { animation: shakeAn 0.4s ease-in-out; }
+        @keyframes shakeAn { 0%, 100% {transform:translateX(0);} 25% {transform:translateX(-8px);} 75% {transform:translateX(8px);} }
 
-        .error-message {
-            color: #ff4757;
-            font-size: 0.9rem;
-            margin-top: 1rem;
-            font-weight: bold;
-            height: 20px;
-            opacity: 0;
-            transition: opacity 0.3s;
+        /* --- STAGE 2: MARIO GAME WINDOW --- */
+        .game-wrapper { position: relative; background: #fff; border-radius: 20px; padding: 10px; border: 3px solid #ffb8b8; }
+        #marioCanvas { background: linear-gradient(to bottom, #dff9fb, #c7ecee); display: block; margin: 0 auto; border-radius: 12px; width: 100%; }
+        
+        .message-bubble {
+            background: #fff; border: 2.5px solid #ff6b81; padding: 10px; border-radius: 15px; font-size: 0.88rem; color: #57606f;
+            margin: 10px 0; display: none; line-height: 1.4; box-shadow: 0 4px 10px rgba(0,0,0,0.05); text-align: left;
+            animation: popIn 0.3s ease;
         }
+        .message-bubble strong { color: #ff4757; }
 
-        /* Wrong Password Shake Animation */
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-10px); }
-            40%, 80% { transform: translateX(10px); }
+        /* --- STAGE 3: WATER ELEMENT PUZZLE --- */
+        .puzzle-arena { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0; text-align: left; }
+        .atom-pool { background: rgba(255,255,255,0.6); padding: 15px; border-radius: 15px; border: 2px dashed #a1c4fd; min-height: 100px; display: flex; gap: 10px; flex-wrap: wrap; align-content: center; }
+        .reactor-cell { background: #e0f7fa; padding: 15px; border-radius: 15px; border: 3px dashed #42a5f5; min-height: 120px; display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap; }
+        
+        .atom {
+            width: 45px; height: 45px; border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            font-weight: bold; color: white; cursor: grab; user-select: none; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.1s; font-size: 1.1rem;
         }
+        .atom:active { cursor: grabbing; }
+        .atom.hydrogen { background: #ff7675; border: 2px solid #fff; }
+        .atom.oxygen { background: #54a0ff; border: 2px solid #fff; }
+        .formula-display { font-size: 1.5rem; color: #2e86de; margin: 15px 0; font-weight: bold; }
 
-        .shake {
-            animation: shake 0.5s ease-in-out;
-        }
+        /* --- FINAL MESSAGE CONTAINER --- */
+        .final-scroll { max-height: 300px; overflow-y: auto; text-align: justify; padding-right: 10px; line-height: 1.8; color: #57606f; }
+        .final-scroll::-webkit-scrollbar { width: 5px; }
+        .final-scroll::-webkit-scrollbar-thumb { background: #ffb8b8; border-radius: 10px; }
 
-        /* --- MAIN BIRTHDAY CONTENT STYLING --- */
-        h1 {
-            font-size: 3rem;
-            color: #ff6b81;
-            margin: 0 0 1rem 0;
-            animation: floatText 3s ease-in-out infinite;
-        }
-
-        @keyframes floatText {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-        }
-
-        /* Long Sweet Message Formatting */
-        .long-message {
-            font-size: 1.1rem;
-            color: #57606f;
-            line-height: 1.8;
-            text-align: justify;
-            max-height: 300px;
-            overflow-y: auto;
-            padding-right: 10px;
-            margin-top: 1.5rem;
-        }
-
-        /* Custom Scrollbar for the message */
-        .long-message::-webkit-scrollbar {
-            width: 6px;
-        }
-        .long-message::-webkit-scrollbar-thumb {
-            background-color: #ffb8b8;
-            border-radius: 10px;
-        }
-
-        .heart {
-            color: #ff4757;
-            display: inline-block;
-            animation: heartbeat 1.2s infinite;
-        }
-
-        @keyframes heartbeat {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-        }
-
-        /* --- FLOATING BALLOONS --- */
+        /* --- FLOATING DECORATIONS --- */
         .balloon {
-            position: absolute;
-            bottom: -150px;
-            width: 60px;
-            height: 75px;
-            border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
-            z-index: 1;
-            opacity: 0.8;
-            animation: floatUp 12s linear infinite;
+            position: absolute; bottom: -150px; width: 50px; height: 65px; border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+            z-index: 1; opacity: 0.6; animation: floatUp 12s linear infinite;
         }
-
-        .balloon::after {
-            content: "▲";
-            position: absolute;
-            bottom: -8px;
-            left: 24px;
-            font-size: 8px;
-            color: inherit;
-        }
-
+        .balloon::after { content: "▲"; position: absolute; bottom: -7px; left: 20px; font-size: 7px; color: inherit; }
         @keyframes floatUp {
             0% { transform: translateY(0) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.7; }
-            90% { opacity: 0.7; }
-            100% { transform: translateY(-120vh) rotate(20deg); opacity: 0; }
+            10% { opacity: 0.6; }
+            100% { transform: translateY(-130vh) rotate(15deg); opacity: 0; }
         }
-
-        #confetti-canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 5;
-        }
+        #confetti-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 50; }
     </style>
 </head>
 <body>
@@ -237,168 +124,316 @@
 
     <div class="container">
         
-        <!-- STEP 1: CUTE LOGIN PORTAL (ACTIVITY LOG) -->
-        <div class="cute-card active" id="loginCard">
-            <h2 class="login-title">🎂 Celebrant Log-In 🎂</h2>
+        <!-- STEP 1: LOG IN PORTAL -->
+        <div class="cute-card active" id="cardLogin">
+            <h2 class="login-title">🎂 Celebrant Identity Verification 🎂</h2>
             
             <div class="input-group">
-                <label for="celebrantName">Your Lovely Name:</label>
-                <input type="text" id="celebrantName" placeholder="e.g., Hannah" autocomplete="off">
+                <label for="username">Username:</label>
+                <div class="input-guide">Hint: Your short nickname</div>
+                <input type="text" id="username" placeholder="e.g., el" autocomplete="off">
             </div>
             
             <div class="input-group">
-                <label for="celebrantDob">Date of Birth (Password):</label>
-                <input type="date" id="celebrantDob">
-            </div>
+                <label for="password">Password (Birthdate):</label>
+                <div class="input-guide">Required Format: YYYY-MM-DD (e.g., 2001-4-10)</div>
+                <input type="text" id="password" placeholder="YYYY-MM-DD" maxlength="10">
+            </div> 
             
-            <button class="login-btn" onclick="verifyCelebrant()">Unlock My Day ✨</button>
-            <div class="error-message" id="errorMessage">Oops! That's not right, try again! 💕</div>
+            <button class="action-btn" onclick="checkCredentials()">Login & Play 🎮</button>
+            <div class="error-message" id="loginError">Access denied. Double check credentials! 💕</div>
         </div>
 
-        <!-- STEP 2: MAIN BIRTHDAY PAGE (POPS IN LATER) -->
-        <div class="cute-card" id="birthdayCard">
-            <h1>HAPPY Birthday! 🎉</h1>
+        <!-- STEP 2: MARIO ARCADE PLATFORM -->
+        <div class="cute-card" id="cardGame">
+            <h2 style="color: #ff6b81; margin: 0 0 10px 0;">The Adventure of Lyndel 👑</h2>
+            <p style="font-size: 0.9rem; color: #778ca3; margin: 0 0 15px 0;">Help <strong>Lyndel</strong> bump all 3 blocks using Left/Right keys and Spacebar to jump!</p>
             
-            <div class="long-message">
-                <p>Dearest Birthday Girl, <span class="heart">♥</span></p>
-                <p>Today is all about celebrating the wonderful, radiant, and absolutely beautiful person that you are. From the moment you logged into this little corner of the internet, I wanted to make sure you felt just how incredibly special and cherished you are by everyone around you.</p>
-                
-                <p>May this brand-new chapter of your life bring you endless pockets of joy, cozy moments, laughter that makes your stomach hurt, and the strength to chase every single dream resting in your heart. You have this magical way of brightening up the world just by being yourself, and today, the universe is smiling right back at you.</p>
-                
-                <p>Eat an extra slice of cake, dance around your room, soak up all the love, and remember that you deserve the absolute best today and every single day after. Thank you for being such a sweet gift to this world!</p>
-                
-                <p style="text-align: center; font-weight: bold; color: #ff6b81; margin-top: 2rem;">Happiest Birthday to You! 🎂✨🥳</p>
+            <div class="game-wrapper">
+                <canvas id="marioCanvas" width="500" height="200"></canvas>
+            </div>
+
+            <div class="message-bubble" id="msgBox0"><strong>Box #1 discovered:</strong> Happy Birthday Lyndel! Today is code-named to celebrate the incredible energy and beautiful light you bring into our lives.</div>
+            <div class="message-bubble" id="msgBox1"><strong>Box #2 discovered:</strong> May this stunning lap around the sun yield endless smiles, comforting spaces, safe environments, and exciting new milestones.</div>
+            <div class="message-bubble" id="msgBox2"><strong>Box #3 discovered:</strong> You deserve the absolute world, cake slices without limits, and love pouring in from every single horizon!</div>
+
+            <div style="margin-top: 20px; display: none;" id="puzzleUnlockArea">
+                <button class="action-btn" style="background:#54a0ff;" onclick="transitionToPuzzle()">Solve the Puzzle ➔</button>
+            </div>
+        </div>
+
+        <!-- STEP 3: COVALENT DRAG & DROP CHEMICAL WATER PUZZLE -->
+        <div class="cute-card" id="cardPuzzle">
+            <h2 style="color: #2e86de; margin-top: 0;">💧 Synthesis Puzzle: Element Formulation</h2>
+            <p style="color: #57606f; font-size: 0.95rem;">Drag and drop atoms from the resource pool into the reactor framework below to build a molecule of life: **Water** ($H_2O$)!</p>
+            
+            <div class="formula-display">Current compound state: <span id="chemFormula">---</span></div>
+
+            <div class="puzzle-arena">
+                <div>
+                    <label style="font-weight: bold; color:#7f8c8d;">Atom Elements Supply:</label>
+                    <div class="atom-pool" id="poolZone" ondragover="allowDrop(event)" ondrop="handleDrop(event)">
+                        <div class="atom hydrogen" id="h1" draggable="true" ondragstart="handleDrag(event)">H</div>
+                        <div class="atom hydrogen" id="h2" draggable="true" ondragstart="handleDrag(event)">H</div>
+                        <div class="atom oxygen" id="o1" draggable="true" ondragstart="handleDrag(event)">O</div>
+                    </div>
+                </div>
+                <div>
+                    <label style="font-weight: bold; color:#2e86de;">Reactor Grid:</label>
+                    <div class="reactor-cell" id="reactorZone" ondragover="allowDrop(event)" ondrop="handleDrop(event)"></div>
+                </div>
+            </div>
+            
+            <button class="action-btn" style="background:#10ac84;" onclick="verifyChemicalPuzzle()">Verify Synthesis Formula</button>
+            <div class="error-message" id="puzzleError">Formula mismatch. Check your combination matrix!</div>
+        </div>
+
+        <!-- STEP 4: FINAL CELEBRATION DISCLOSURE -->
+        <div class="cute-card" id="cardFinal">
+            <h1 style="font-size: 2.5rem; margin-top: 0;">Unconditional Success! 🎉</h1>
+            <h3 style="color:#ff6b81; margin-top:-10px;">Happiest Birthday, Lyndel! 💖</h3>
+            
+            <div class="final-scroll">
+                <p>Dearest Lyndel,</p>
+                <p>You did it! You unlocked the blocks, synthesized the elemental foundation of life, and arrived safely at your destination. This entire game interface was constructed with love to remind you how wonderfully special and valuable you are.</p>
+                <p>Just like water, you are a refreshing, life-giving, and essential presence to everyone lucky enough to know you. Your strength, kindness, and beauty flow effortlessly, making the world brighter wherever you step.</p>
+                <p>May your brand-new chapter be painted with bright colors, magical real-world adventures, massive achievements, and genuine moments of pure delight. Keep shining, dreaming big, and being the wonderful person that you are!</p>
+                <p style="text-align: center; font-weight: bold; color: #ff6b81; font-size: 1.2rem; margin-top: 2rem;">Cheers to your best year yet! 🥂✨🍰</p>
             </div>
         </div>
 
     </div>
 
     <script>
-        // --- CONFIGURATION: CHANGE TARGET ANSWER HERE ---
-        // Put the expected name (lowercase) and exact birthdate password here
-        const CORRECT_NAME = "el"; 
-        const CORRECT_DOB = "2002-06-03"; // Format: YYYY-MM-DD
+        const USERNAME_TARGET = "lyndel";
+        const PASSWORD_TARGET = "2002-06-03"; 
 
-        // --- PASSWORD VALIDATION & ANIMATION LOGIC ---
-        function verifyCelebrant() {
-            const inputName = document.getElementById('celebrantName').value.trim().toLowerCase();
-            const inputDob = document.getElementById('celebrantDob').value;
-            const loginCard = document.getElementById('loginCard');
-            const birthdayCard = document.getElementById('birthdayCard');
-            const errorMsg = document.getElementById('errorMessage');
+        function navigateTo(targetId) {
+            document.querySelectorAll('.cute-card').forEach(c => c.classList.remove('active'));
+            document.getElementById(targetId).classList.add('active');
+        }
 
-            if (inputName === CORRECT_NAME && inputDob === CORRECT_DOB) {
-                // 1. Success! Hide error message
-                errorMsg.style.opacity = "0";
-                
-                // 2. Pop-out login card
-                loginCard.classList.remove('active');
-                loginCard.classList.add('pop-out');
-                
-                // 3. Wait for pop-out animation to finish, then Pop-in the Birthday card
-                setTimeout(() => {
-                    birthdayCard.classList.add('active');
-                    // Huge burst of celebration confetti!
-                    triggerMassiveConfetti();
-                }, 500);
+        function checkCredentials() {
+            const u = document.getElementById('username').value.trim().toLowerCase();
+            const p = document.getElementById('password').value.trim();
+            const err = document.getElementById('loginError');
+            const card = document.getElementById('cardLogin');
 
+            if (u === USERNAME_TARGET && p === PASSWORD_TARGET) {
+                err.style.opacity = "0";
+                navigateTo('cardGame');
+                triggerConfettiBurst();
+                runMarioGameSystem();
             } else {
-                // Wrong password: Apply shake animation and display error
-                loginCard.classList.add('shake');
-                errorMsg.style.opacity = "1";
-                
-                // Clear the shake class so it can be re-triggered
-                setTimeout(() => {
-                    loginCard.classList.remove('shake');
-                }, 500);
+                card.classList.add('shake');
+                err.style.opacity = "1";
+                setTimeout(() => card.classList.remove('shake'), 400);
             }
         }
 
-        // --- BALLOON ENGINE ---
-        const balloonColors = ['#ff869a', '#afe3ff', '#fff3a8', '#b3f5bc', '#dfb3ff'];
-        
-        function createBalloon() {
-            const balloon = document.createElement('div');
-            balloon.classList.add('balloon');
-            const randomColor = balloonColors[Math.floor(Math.random() * balloonColors.length)];
-            balloon.style.backgroundColor = randomColor;
-            balloon.style.color = randomColor; 
-            balloon.style.left = Math.random() * 100 + 'vw';
-            
-            const sizeMultiplier = 0.6 + Math.random() * 0.8; 
-            balloon.style.transform = `scale(${sizeMultiplier})`;
-            
-            const duration = 8 + Math.random() * 6;
-            balloon.style.animationDuration = duration + 's';
-            
-            document.body.appendChild(balloon);
-            setTimeout(() => { balloon.remove(); }, duration * 1000);
-        }
-        setInterval(createBalloon, 1800);
+        // Auto-hyphenate logic to gently assist input format if desired
+        document.getElementById('password').addEventListener('input', function (e) {
+            let x = e.target.value.replace(/\D/g, '').match(/(\d{0,4})(\d{0,2})(\d{0,2})/);
+            e.target.value = !x[2] ? x[1] : x[1] + '-' + x[2] + (x[3] ? '-' + x[3] : '');
+        });
 
-        // --- CONFETTI SYSTEM ---
+        function runMarioGameSystem() {
+            const canvas = document.getElementById('marioCanvas');
+            const ctx = canvas.getContext('2d');
+
+            let player = {
+                x: 35, y: 130,
+                width: 20, height: 32,
+                velX: 0, velY: 0,
+                grounded: false,
+                pinkCoat: "#ff7675", blueSkirt: "#54a0ff"
+            };
+
+            let blocks = [
+                { x: 110, y: 75, w: 30, h: 30, popped: false, bounceY: 0, id: "msgBox0" },
+                { x: 235, y: 75, w: 30, h: 30, popped: false, bounceY: 0, id: "msgBox1" },
+                { x: 360, y: 75, w: 30, h: 30, popped: false, bounceY: 0, id: "msgBox2" }
+            ];
+
+            let gravity = 0.4;
+            let friction = 0.82;
+            let keys = {};
+
+            window.addEventListener("keydown", e => { if([32,37,39].includes(e.keyCode)) e.preventDefault(); keys[e.keyCode] = true; });
+            window.addEventListener("keyup", e => { keys[e.keyCode] = false; });
+
+            function loopPhysics() {
+                if (keys[39]) { if (player.velX < 3.5) player.velX++; }
+                if (keys[37]) { if (player.velX > -3.5) player.velX--; }
+                if (keys[32] || keys[38]) { 
+                    if (player.grounded) { player.velY = -8.5; player.grounded = false; }
+                }
+
+                player.velX *= friction;
+                player.velY += gravity;
+                player.x += player.velX;
+                player.y += player.velY;
+
+                if (player.y >= 165 - player.height) {
+                    player.y = 165 - player.height;
+                    player.velY = 0;
+                    player.grounded = true;
+                }
+
+                if(player.x < 0) player.x = 0;
+                if(player.x > canvas.width - player.width) player.x = canvas.width - player.width;
+
+                blocks.forEach(b => {
+                    if (player.x < b.x + b.w && player.x + player.width > b.x &&
+                        player.y < b.y + b.h && player.y + player.height > b.y) {
+                        
+                        if (player.velY < 0 && player.y + 6 > b.y + b.h) {
+                            player.velY = 1;
+                            if(!b.popped) {
+                                b.popped = true;
+                                b.bounceY = -6;
+                                document.getElementById(b.id).style.display = "block";
+                                evaluateGameEndCondition();
+                            }
+                        }
+                    }
+                    if(b.bounceY < 0) b.bounceY += 1;
+                });
+            }
+
+            function evaluateGameEndCondition() {
+                if(blocks.every(b => b.popped)) {
+                    document.getElementById('puzzleUnlockArea').style.display = "block";
+                }
+            }
+
+            function renderGraphics() {
+                ctx.clearRect(0,0, canvas.width, canvas.height);
+
+                ctx.fillStyle = "#ffeaa7"; ctx.fillRect(0, 165, canvas.width, 35);
+                ctx.fillStyle = "#fab1a0"; ctx.fillRect(0, 165, canvas.width, 4);
+
+                blocks.forEach(b => {
+                    let calcY = b.y + b.bounceY;
+                    ctx.fillStyle = b.popped ? "#b2bec3" : "#fdcb6e";
+                    ctx.fillRect(b.x, calcY, b.w, b.h);
+                    ctx.strokeStyle = "#fff"; ctx.lineWidth = 2;
+                    ctx.strokeRect(b.x, calcY, b.w, b.h);
+                    
+                    ctx.fillStyle = "#fff"; ctx.font = "bold 16px Arial";
+                    ctx.fillText(b.popped ? "✓" : "?", b.x + 9, calcY + 21);
+                });
+
+                // Lyndel Character Rendering (Pink and Blue dress)
+                ctx.fillStyle = "#ffeaa7"; 
+                ctx.fillRect(player.x - 2, player.y - 3, player.width + 4, 10);
+                ctx.fillStyle = "#ffd3cb"; 
+                ctx.fillRect(player.x + 2, player.y + 4, player.width - 4, 8);
+
+                ctx.fillStyle = player.pinkCoat; 
+                ctx.fillRect(player.x, player.y + 12, player.width, 10);
+                ctx.fillStyle = player.blueSkirt; 
+                ctx.fillRect(player.x - 1, player.y + 22, player.width + 2, 7);
+
+                ctx.fillStyle = "#2d3436"; 
+                ctx.fillRect(player.x + 2, player.y + 29, 5, 3);
+                ctx.fillRect(player.x + player.width - 7, player.y + 29, 5, 3);
+            }
+
+            function frameTick() {
+                loopPhysics();
+                renderGraphics();
+                requestAnimationFrame(frameTick);
+            }
+            frameTick();
+        }
+
+        function transitionToPuzzle() {
+            navigateTo('cardPuzzle');
+        }
+
+        function handleDrag(ev) { ev.dataTransfer.setData("text", ev.target.id); }
+        function allowDrop(ev) { ev.preventDefault(); }
+        function handleDrop(ev) {
+            ev.preventDefault();
+            let data = ev.dataTransfer.getData("text");
+            let targetNode = ev.target;
+            if (targetNode.id === "reactorZone" || targetNode.id === "poolZone") {
+                targetNode.appendChild(document.getElementById(data));
+            }
+            updateFormulaReading();
+        }
+
+        function updateFormulaReading() {
+            let reactor = document.getElementById('reactorZone');
+            let hCount = reactor.querySelectorAll('.hydrogen').length;
+            let oCount = reactor.querySelectorAll('.oxygen').length;
+            let output = "";
+            if (hCount > 0) output += "H" + (hCount > 1 ? `<sub>${hCount}</sub>` : "");
+            if (oCount > 0) output += "O" + (oCount > 1 ? `<sub>${oCount}</sub>` : "");
+            document.getElementById('chemFormula').innerHTML = output || "---";
+        }
+
+        function verifyChemicalPuzzle() {
+            let reactor = document.getElementById('reactorZone');
+            let hCount = reactor.querySelectorAll('.hydrogen').length;
+            let oCount = reactor.querySelectorAll('.oxygen').length;
+            let err = document.getElementById('puzzleError');
+
+            if (hCount === 2 && oCount === 1) {
+                err.style.opacity = "0";
+                navigateTo('cardFinal');
+                triggerConfettiBurst();
+                setInterval(triggerConfettiBurst, 1500);
+            } else {
+                err.style.opacity = "1";
+            }
+        }
+
+        const bColors = ['#ff869a', '#afe3ff', '#fff3a8', '#b3f5bc', '#dfb3ff'];
+        function createBalloon() {
+            const b = document.createElement('div'); b.classList.add('balloon');
+            const rc = bColors[Math.floor(Math.random() * bColors.length)];
+            b.style.backgroundColor = rc; b.style.color = rc; b.style.left = Math.random() * 100 + 'vw';
+            const s = 0.6 + Math.random() * 0.8; b.style.transform = `scale(${s})`;
+            const d = 8 + Math.random() * 6; b.style.animationDuration = d + 's';
+            document.body.appendChild(b); setTimeout(() => b.remove(), d * 1000);
+        }
+        setInterval(createBalloon, 2000);
+
         const canvas = document.getElementById('confetti-canvas');
         const ctx = canvas.getContext('2d');
-        let particles = [];
+        let parts = [];
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resizeCanvas); resizeCanvas();
 
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        class ConfettiParticle {
-            constructor(x, y, speedX, speedY) {
-                this.x = x;
-                this.y = y;
-                this.size = Math.random() * 7 + 4;
-                this.color = balloonColors[Math.floor(Math.random() * balloonColors.length)];
-                this.speedX = speedX || Math.random() * 10 - 5;
-                this.speedY = speedY || Math.random() * -10 - 5;
-                this.gravity = 0.2;
-                this.rotation = Math.random() * 360;
-                this.rotationSpeed = Math.random() * 6 - 3;
-                this.opacity = 1;
+        class Particle {
+            constructor(x,y) {
+                this.x = x; this.y = y; this.size = Math.random() * 6 + 4;
+                this.color = bColors[Math.floor(Math.random() * bColors.length)];
+                this.spX = Math.random() * 10 - 5; this.spY = Math.random() * -12 - 5;
+                this.grav = 0.25; this.rot = Math.random() * 360; this.op = 1;
             }
-            update() {
-                this.speedY += this.gravity;
-                this.x += this.speedX;
-                this.y += this.speedY;
-                this.rotation += this.rotationSpeed;
-                this.opacity -= 0.01;
-            }
+            update() { this.spY += this.grav; this.x += this.spX; this.y += this.spY; this.op -= 0.012; this.rot += 3; }
             draw() {
-                ctx.save();
-                ctx.translate(this.x, this.y);
-                ctx.rotate((this.rotation * Math.PI) / 180);
-                ctx.globalAlpha = this.opacity;
-                ctx.fillStyle = this.color;
-                ctx.fillRect(-this.size/2, -this.size/2, this.size, this.size);
-                ctx.restore();
+                ctx.save(); ctx.translate(this.x, this.y); ctx.rotate((this.rot * Math.PI)/180);
+                ctx.globalAlpha = this.op; ctx.fillStyle = this.color;
+                ctx.fillRect(-this.size/2, -this.size/2, this.size, this.size); ctx.restore();
             }
         }
 
-        function triggerMassiveConfetti() {
-            // Shoots multiple waves from the sides and center
-            const W = canvas.width;
-            const H = canvas.height;
-            
-            // Left burst
-            for(let i=0; i<40; i++) particles.push(new ConfettiParticle(0, H, Math.random()*12 + 5, Math.random()*-15 - 10));
-            // Right burst
-            for(let i=0; i<40; i++) particles.push(new ConfettiParticle(W, H, Math.random()*-12 - 5, Math.random()*-15 - 10));
-            // Center burst
-            for(let i=0; i<50; i++) particles.push(new ConfettiParticle(W/2, H/2));
+        function triggerConfettiBurst() {
+            for(let i=0; i<35; i++) parts.push(new Particle(window.innerWidth/4, window.innerHeight));
+            for(let i=0; i<35; i++) parts.push(new Particle((window.innerWidth/4)*3, window.innerHeight));
         }
 
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles = particles.filter(p => p.opacity > 0);
-            particles.forEach(p => { p.update(); p.draw(); });
-            requestAnimationFrame(animate);
+        function animLoop() {
+            ctx.clearRect(0,0, canvas.width, canvas.height);
+            parts = parts.filter(p => p.op > 0);
+            parts.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animLoop);
         }
-        animate();
+        animLoop();
     </script>
 </body>
 </html>
